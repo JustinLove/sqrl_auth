@@ -63,7 +63,6 @@ Server: The server receives a request and verifies it
       :previous_id_match => req.pidk == user.idk,
       :ip_match => request.ip == req_nut.ip,
       :sqrl_disabled => !user.sqrl_enabled?,
-      :logged_in => session.logged_in?(user),
       :command_failed => invalid,
       :sqrl_failure => invalid,
     }, {
@@ -76,7 +75,6 @@ Client: The client may inspect the response
 
     res = SQRL::ResponseParser.new(session, response.body)
     res.command_failed?
-    res.logged_in?
     res.server_friendly_name
 
     # obtain user intent to login
