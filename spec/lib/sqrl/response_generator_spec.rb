@@ -29,7 +29,6 @@ describe SQRL::ResponseGenerator do
   describe 'additional fields' do
     subject {SQRL::ResponseGenerator.new(nut, {}, {
         :qry => 'query',
-        :lnk => 'link',
         :sfn => 'name',
         :other => 'other',
       })}
