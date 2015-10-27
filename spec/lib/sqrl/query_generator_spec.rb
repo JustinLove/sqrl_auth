@@ -26,23 +26,4 @@ describe SQRL::QueryGenerator do
   it {expect(subject.post_body).to be_a(String)}
   it {expect(subject.commands).to be_empty}
   it {expect(subject.client_data.include?(:cmd)).to be false}
-
-  describe "login command" do
-    subject {SQRL::QueryGenerator.new(session, url).login!}
-    it {expect(subject.commands).to include('login')}
-    it {expect(subject.client_data[:cmd]).to eq('login')}
-  end
-
-  describe "setlock command" do
-    subject {SQRL::QueryGenerator.new(session, url).setlock!({:vuk => 'vuk', :suk => 'suk'})}
-    it {expect(subject.commands).to include('setlock')}
-    it {expect(subject.client_data[:cmd]).to eq('setlock')}
-    it {expect(subject.client_data[:vuk]).to be_a(String)}
-    it {expect(subject.client_data[:suk]).to be_a(String)}
-  end
-
-  describe "unlock" do
-    subject {SQRL::QueryGenerator.new(session, url).setlock!({:vuk => 'vuk', :suk => 'suk'}).unlock(ursk)}
-    it {expect(subject.to_hash[:ids]).to match(/\A[\-\w_]+\Z/)}
-  end
 end

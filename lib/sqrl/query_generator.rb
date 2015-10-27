@@ -14,39 +14,12 @@ module SQRL
     attr_reader :server_unlock_key
     attr_reader :verify_unlock_key
 
-    def setkey! # idk assumed in a valid request
-      @commands << 'setkey'
-      self
-    end
-
     def setlock!(options)
       if !(options[:suk] && options[:vuk])
         raise ArgumentError, ":suk and :vuk are required to setlock"
       end
-      @commands << 'setlock'
       @server_unlock_key = encode(options[:suk])
       @verify_unlock_key = encode(options[:vuk])
-      self
-    end
-
-    def create!
-      @commands << 'create'
-      self
-    end
-
-    def login!
-      @commands << 'login'
-      self
-    end
-
-    def logout!
-      @commands << 'logout'
-      self
-    end
-
-    # depreciated
-    def logoff!
-      @commands << 'logoff'
       self
     end
 

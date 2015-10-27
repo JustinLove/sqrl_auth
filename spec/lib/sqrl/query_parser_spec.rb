@@ -10,7 +10,7 @@ describe SQRL::QueryParser do
   URL = 'sqrl://example.com/sqrl?nut=awnuts'
   def self.testcase(ursk)
     session = SQRL::ClientSession.new(URL, 'x'.b*32)
-    SQRL::QueryGenerator.new(session, URL).login!.unlock(ursk)
+    SQRL::QueryGenerator.new(session, URL)
   end
 
 =begin
@@ -41,11 +41,11 @@ describe SQRL::QueryParser do
   describe 'hash request' do
     subject {SQRL::QueryParser.new(request)}
     it {expect(subject.server_string).to eq(URL)}
-    it {expect(subject.client_string).to match('ver=1\r\ncmd=login\r\nidk=')}
+    #it {expect(subject.client_string).to match('ver=1\r\ncmd=login\r\nidk=')}
     it {expect(subject.client_data).to be_a(Hash)}
     it {expect(subject.client_data['ver']).to eq('1')}
-    it {expect(subject.client_data['cmd']).to eq('login')}
-    it {expect(subject.commands).to eq(['login'])}
+    #it {expect(subject.client_data['cmd']).to eq('login')}
+    #it {expect(subject.commands).to eq(['login'])}
     it {expect(subject.idk.length).to eq(32)}
     it {expect(subject.ids.length).to eq(64)}
     it {expect(subject).to be_valid}
@@ -55,6 +55,6 @@ describe SQRL::QueryParser do
   describe 'string request' do
     subject {SQRL::QueryParser.new(body)}
     it {expect(subject.server_string).to eq(URL)}
-    it {expect(subject.client_string).to match('ver=1\r\ncmd=login\r\nidk=')}
+    #it {expect(subject.client_string).to match('ver=1\r\ncmd=login\r\nidk=')}
   end
 end

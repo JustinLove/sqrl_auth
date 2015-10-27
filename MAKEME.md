@@ -56,8 +56,6 @@ Server: The server receives a request and verifies it
     req_nut = SQRL::ReversibleNut.reverse(server_key, params[:nut])
     user = find_user(req.idk)
 
-    req.login? #etc, on the second loop
-
     res_nut = req_nut.response_nut
     response = SQRL::ResponseGenerator.new(res_nut, {
       :id_match => req.idk == user.idk,
@@ -84,16 +82,12 @@ Client: The client may inspect the response
 
     request = SQRL::QueryGenerator.new(session, response.body)
     # one or more:
-    request.setkey!
-    request.setlock!(identity_lock_key.unlock_pair)
-    request.disable!
+    #???? request.setlock!(identity_lock_key.unlock_pair)
+    request.query!
+    request.ident!
     request.enable!
-    request.delete!
-    request.create!
-    request.login!
-    request.logme!
-    request.logout!
-    request.logoff! # depreciated
+    request.disable!
+    request.remove!
 
     https_post(request.post_path, request.to_hash)
 
