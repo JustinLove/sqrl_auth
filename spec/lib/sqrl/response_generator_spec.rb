@@ -21,7 +21,7 @@ describe SQRL::ResponseGenerator do
     it {expect(with({})).to eq(0)}
     it {expect(with(:id_match => true)).to eq(0x01)}
     it {expect(with(:id_match => true, :previous_id_match => true)).to eq(0x03)}
-    it {expect(with(:ip_match => true, :login_enabled => true)).to eq(0x0c)}
+    it {expect(with(:ip_match => true, :sqrl_disabled => true)).to eq(0x0c)}
     it {expect(with(:logged_in => true, :creation_allowed => true)).to eq(0x30)}
     it {expect(with(:command_failed => true, :sqrl_failure => true)).to eq(0xc0)}
   end

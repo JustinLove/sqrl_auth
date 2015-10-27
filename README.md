@@ -62,7 +62,7 @@ Server: The server receives a request and verifies it
       :id_match => req.idk == user.idk,
       :previous_id_match => req.pidk == user.idk,
       :ip_match => request.ip == req_nut.ip,
-      :login_enabled => user.sqrl_enabled?,
+      :sqrl_disabled => !user.sqrl_enabled?,
       :logged_in => session.logged_in?(user),
       :command_failed => invalid,
       :sqrl_failure => invalid,
