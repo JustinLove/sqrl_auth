@@ -22,7 +22,7 @@ describe SQRL::ResponseGenerator do
     it {expect(with(:id_match => true)).to eq(0x01)}
     it {expect(with(:id_match => true, :previous_id_match => true)).to eq(0x03)}
     it {expect(with(:ip_match => true, :sqrl_disabled => true)).to eq(0x0c)}
-    it {expect(with(:function_not_supported => true, :creation_allowed => true)).to eq(0x30)}
+    it {expect(with(:function_not_supported => true, :transient_error => true)).to eq(0x30)}
     it {expect(with(:command_failed => true, :sqrl_failure => true)).to eq(0xc0)}
   end
 
