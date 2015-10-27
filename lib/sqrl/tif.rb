@@ -7,6 +7,6 @@ module SQRL
     0x10 => :function_not_supported,
     0x20 => :transient_error,
     0x40 => :command_failed,
-    0x80 => :sqrl_failure,
+    0x80 => :client_failure,
   }
 end

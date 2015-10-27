@@ -64,7 +64,7 @@ Server: The server receives a request and verifies it
       :ip_match => request.ip == req_nut.ip,
       :sqrl_disabled => !user.sqrl_enabled?,
       :command_failed => invalid,
-      :sqrl_failure => invalid,
+      :client_failure => invalid,
     }, {
       :sfn => 'CoolApp',
       :foo => 'bar',
