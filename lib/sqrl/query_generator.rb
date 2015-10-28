@@ -14,6 +14,11 @@ module SQRL
     attr_reader :server_unlock_key
     attr_reader :verify_unlock_key
 
+    def query!
+      @commands << 'query'
+      self
+    end
+
     def setlock!(options)
       if !(options[:suk] && options[:vuk])
         raise ArgumentError, ":suk and :vuk are required to setlock"

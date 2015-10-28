@@ -26,4 +26,10 @@ describe SQRL::QueryGenerator do
   it {expect(subject.post_body).to be_a(String)}
   it {expect(subject.commands).to be_empty}
   it {expect(subject.client_data.include?(:cmd)).to be false}
+
+  describe "query command" do
+    subject {SQRL::QueryGenerator.new(session, url).query!}
+    it {expect(subject.commands).to include('query')}
+    it {expect(subject.client_data[:cmd]).to eq('query')}
+  end
 end
