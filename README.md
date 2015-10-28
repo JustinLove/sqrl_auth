@@ -79,6 +79,9 @@ Client: The client may inspect the response
 
     request = SQRL::QueryGenerator.new(session, response.body)
     # one or more:
+    request.query!
+    request.ident!
+      request.setlock(identity_lock_key.unlock_pair)
 
     https_post(request.post_path, request.to_hash)
 

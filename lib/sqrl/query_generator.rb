@@ -19,7 +19,12 @@ module SQRL
       self
     end
 
-    def setlock!(options)
+    def ident!
+      @commands << 'ident'
+      self
+    end
+
+    def setlock(options)
       if !(options[:suk] && options[:vuk])
         raise ArgumentError, ":suk and :vuk are required to setlock"
       end

@@ -68,11 +68,11 @@ module SQRL
     end
 
     def suk
-      decode(client_data['suk']).b
+      decode(client_data['suk']).b if client_data['suk']
     end
 
     def vuk
-      decode(client_data['vuk']).b
+      decode(client_data['vuk']).b if client_data['vuk']
     end
 
     def urs

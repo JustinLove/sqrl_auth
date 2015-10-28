@@ -32,4 +32,10 @@ describe SQRL::QueryGenerator do
     it {expect(subject.commands).to include('query')}
     it {expect(subject.client_data[:cmd]).to eq('query')}
   end
+
+  describe "setlock" do
+    subject {SQRL::QueryGenerator.new(session, url).setlock({:vuk => 'vuk', :suk => 'suk'})}
+    it {expect(subject.client_data[:vuk]).to be_a(String)}
+    it {expect(subject.client_data[:suk]).to be_a(String)}
+  end
 end
