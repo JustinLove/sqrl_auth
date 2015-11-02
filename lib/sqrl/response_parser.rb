@@ -2,6 +2,7 @@ require 'sqrl/base64'
 require 'sqrl/key/site'
 require 'sqrl/url'
 require 'sqrl/tif'
+require 'sqrl/ask'
 
 module SQRL
   class ResponseParser
@@ -63,7 +64,11 @@ module SQRL
     end
 
     def ask
-      params['ask'] || ''
+      if params['ask']
+        Ask.parse(params['ask'])
+      else
+        Ask.new('')
+      end
     end
 
     private

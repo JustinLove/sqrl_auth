@@ -64,6 +64,7 @@ Server: The server receives a request and verifies it
       :command_failed => invalid,
       :client_failure => invalid,
     }, {
+      :suk => user.suk,
       :sfn => 'CoolApp',
       :foo => 'bar',
     })
