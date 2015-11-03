@@ -2,7 +2,7 @@ require 'sqrl/base64'
 
 module SQRL
   class QueryGenerator
-    def initialize(session, server_string)
+    def initialize(session, server_string = session.server_string)
       @session = session
       @server_string = server_string
       @commands = []

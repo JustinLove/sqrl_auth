@@ -39,7 +39,7 @@ RESPONSE
 
     subject {SQRL::ResponseParser.new(session, encoded)}
 
-    it {p subject.params}
+    #it {p subject.params}
     it {expect(subject.params['ver']).to eq('1')}
     it {expect(subject.server_friendly_name).to eq('GRC')}
     it {expect(subject.tif).to eq(0x004)}
