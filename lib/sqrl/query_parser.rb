@@ -48,7 +48,7 @@ module SQRL
     end
 
     def client_data
-      Hash[client_string.split("\r\n").map {|s| s.split('=')}]
+      Hash[client_string.split("\r\n").reject{|s| s.empty?}.map {|s| s.split('=')}]
     end
 
     def idk

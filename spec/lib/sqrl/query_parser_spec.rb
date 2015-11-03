@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sqrlid'
 require 'sqrl/query_parser'
 require 'sqrl/client_session'
 require 'sqrl/query_generator'
@@ -56,5 +57,20 @@ describe SQRL::QueryParser do
     subject {SQRL::QueryParser.new(body)}
     it {expect(subject.server_string).to eq(URL)}
     it {expect(subject.client_string).to match('ver=1\r\ncmd=query\r\nidk=')}
+  end
+
+  describe 'sqrlid query' do
+    let(:body) {SQRLid::First}
+    subject {SQRL::QueryParser.new(body)}
+    it {expect(subject.client_data['ver']).to eq('1')}
+    it {expect(subject.client_data['cmd']).to eq('query')}
+  end
+
+  describe 'sqrlid ident' do
+    let(:body) {SQRLid::Second}
+    subject {SQRL::QueryParser.new(body)}
+    #it {expect(subject).to be_valid}
+    it {expect(subject.client_data['ver']).to eq('1')}
+    it {expect(subject.client_data['cmd']).to eq('query')} # ??
   end
 end

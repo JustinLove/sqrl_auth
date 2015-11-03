@@ -24,7 +24,7 @@ RESPONSE
   it {expect(subject.function_not_supported?).to be false}
 
   describe "encoded message" do
-    let(:encoded) {"server=dmVyPTENCnRpZj02NA0KbnV0PU5XRXlZV1F4WlRFM056QTBOemhqTW1KbU5EUm1abVZrTUdZeVpqUmxOVFUNCnNmbj1UZXN0IFNlcnZlcg0K"}
+    let(:encoded) {"dmVyPTENCnRpZj02NA0KbnV0PU5XRXlZV1F4WlRFM056QTBOemhqTW1KbU5EUm1abVZrTUdZeVpqUmxOVFUNCnNmbj1UZXN0IFNlcnZlcg0K"}
     subject {SQRL::ResponseParser.new(session, encoded)}
 
     it {expect(subject.params['ver']).to eq('1')}
@@ -32,5 +32,17 @@ RESPONSE
     it {expect(subject.tif).to eq(0x64)}
     it {expect(subject.function_not_supported?).to be false}
     it {expect(subject.command_failed?).to be true}
+  end
+
+  describe "GRC" do
+    let(:encoded) {"dmVyPTENCm51dD1QbXNqQlVkSUFLUEZ5RWVwRG9ON2Z3DQp0aWY9NA0KcXJ5PS9zcXJsP251dD1QbXNqQlVkSUFLUEZ5RWVwRG9ON2Z3DQpzZm49R1JDDQo"}
+
+    subject {SQRL::ResponseParser.new(session, encoded)}
+
+    it {p subject.params}
+    it {expect(subject.params['ver']).to eq('1')}
+    it {expect(subject.server_friendly_name).to eq('GRC')}
+    it {expect(subject.tif).to eq(0x004)}
+    it {expect(subject.command_failed?).to be false}
   end
 end

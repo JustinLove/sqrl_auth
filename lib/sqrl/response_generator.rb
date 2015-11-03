@@ -14,7 +14,7 @@ module SQRL
     attr_accessor :tif_base
 
     def response_body
-      'server=' + encode(server_string)
+      encode(server_string)
     end
 
     def to_hash

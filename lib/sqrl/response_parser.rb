@@ -13,8 +13,10 @@ module SQRL
       if (params.respond_to?(:split))
         if params.count("\r") > params.count("&")
           @params = parse_params(params)
-        else
+        elsif params.count("&") > 0
           @params = parse_form(params)
+        else
+          @params = parse_params(decode(params))
         end
       else
         @params = params
@@ -78,13 +80,19 @@ module SQRL
     end
 
     def parse_form(s)
-      Hash[s.split("&").map {|s| s.split('=')}]
+      Hash[s.split("&").map {|s|
+        m = s.match(/([^=]+)=(.*)/)
+        [m[1], m[2]]
+      }]
     rescue ArgumentError => e
       {'error' => e, 'tif' => 0x40.to_s(tif_base)}
     end
 
     def parse_params(s)
-      Hash[s.split("\r\n").map {|s| s.split('=')}]
+      Hash[s.split("\r\n").map {|s|
+        m = s.match(/([^=]+)=(.*)/)
+        [m[1], m[2]]
+      }]
     rescue ArgumentError => e
       {'error' => e, 'tif' => 0x40.to_s(tif_base)}
     end
