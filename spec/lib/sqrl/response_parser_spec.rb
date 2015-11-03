@@ -8,7 +8,7 @@ describe SQRL::ResponseParser do
   let(:nut) {'1vwuE1aBqyOHCg9yqVDhnQ'}
   let(:url) {'qrl://example.com/sqrl?nut=awnuts'}
   let(:session) {SQRL::ClientSession.new(url, imk)}
-  let(:message) {<<RESPONSE}
+  let(:message) {SQRL::Base64.encode <<RESPONSE}
 ver=1\r
 nut=#{nut}\r
 tif=44\r

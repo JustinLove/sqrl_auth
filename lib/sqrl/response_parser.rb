@@ -10,24 +10,28 @@ module SQRL
       @session = session
       @tif_base = 16
 
-      if (params.respond_to?(:split))
-        if params.count("\r") > params.count("&")
-          @params = parse_params(params)
-        elsif params.count("&") > 0
-          @params = parse_form(params)
+      begin
+        @params = parse_params(decode(params))
+      rescue
+        warn "response not canoncial, tyring hueristics"
+        p params
+        if (params.respond_to?(:split))
+          if params.count("\r") > params.count("&")
+            @params = parse_params(params)
+          else
+            @params = parse_form(params)
+          end
         else
-          @params = parse_params(decode(params))
+          @params = params
+
+          if @params.any? && !@params.keys.first.kind_of?(String)
+            raise ArgumentError, "#{self.class.name} uses string keys for params"
+          end
         end
-      else
-        @params = params
-      end
 
-      if @params.any? && !@params.keys.first.kind_of?(String)
-        raise ArgumentError, "#{self.class.name} uses string keys for params"
-      end
-
-      if @params['server']
-        @params = parse_params(decode(@params['server']))
+        if @params['server']
+          @params = parse_params(decode(@params['server']))
+        end
       end
     end
 
