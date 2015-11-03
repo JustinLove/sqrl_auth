@@ -1,3 +1,4 @@
+require 'sqrl/base64'
 require 'uri'
 require 'uri/https'
 require 'delegate'
@@ -36,25 +37,31 @@ module SQRL
       URI::Parser.new(:UNRESERVED => "|\\-_.!~*'()a-zA-Z\\d")
     end
 
-    def self.sqrl(domain_path, nut = nil)
-      create(URI::SQRL, domain_path, nut)
+    def self.sqrl(domain_path, options = {})
+      create(URI::SQRL, domain_path, options)
     end
 
-    def self.qrl(domain_path, nut = nil)
-      create(URI::QRL, domain_path, nut)
+    def self.qrl(domain_path, options = {})
+      create(URI::QRL, domain_path, options)
     end
 
-    def self.create(kind, domain_path, nut = nil)
+    def self.create(kind, domain_path, options = {})
       parts = domain_path.split('/')
       host = parts.first
       parts[0] = ''
       path = parts.join('/')
-      query = 'nut='+nut if nut
-      new(kind.new(kind.scheme, nil, host, nil, nil, path, nil, query, nil, parser))
+      query = []
+      query << 'nut='+options[:nut] if options[:nut]
+      query << 'sfn='+SQRL::Base64.encode(options[:sfn]) if options[:sfn]
+      new(kind.new(kind.scheme, nil, host, nil, nil, path, nil, query.join('&'), nil, parser))
     end
 
     def nut
       query.split('&').find {|n| n.match('nut=')}.gsub('nut=', '')
+    end
+
+    def sfn
+      SQRL::Base64.decode(query.split('&').find {|n| n.match('sfn=')}.gsub('sfn=', ''))
     end
 
     def signing_host
