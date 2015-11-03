@@ -12,6 +12,7 @@ module SQRL
     end
 
     attr_accessor :tif_base
+    attr_reader :fields
 
     def response_body
       encode(server_string)

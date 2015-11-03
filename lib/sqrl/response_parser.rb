@@ -17,6 +17,8 @@ module SQRL
       rescue
         heuristic_parse(params)
       end
+
+      session.update_post_path(@params['qry']) if @params['qry']
     end
 
     def heuristic_parse(params)

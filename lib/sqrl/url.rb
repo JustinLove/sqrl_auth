@@ -36,20 +36,20 @@ module SQRL
       URI::Parser.new(:UNRESERVED => "|\\-_.!~*'()a-zA-Z\\d")
     end
 
-    def self.sqrl(domain_path, nut)
+    def self.sqrl(domain_path, nut = nil)
       create(URI::SQRL, domain_path, nut)
     end
 
-    def self.qrl(domain_path, nut)
+    def self.qrl(domain_path, nut = nil)
       create(URI::QRL, domain_path, nut)
     end
 
-    def self.create(kind, domain_path, nut)
+    def self.create(kind, domain_path, nut = nil)
       parts = domain_path.split('/')
       host = parts.first
       parts[0] = ''
       path = parts.join('/')
-      query = 'nut='+nut
+      query = 'nut='+nut if nut
       new(kind.new(kind.scheme, nil, host, nil, nil, path, nil, query, nil, parser))
     end
 

@@ -9,4 +9,11 @@ describe SQRL::ClientSession do
 
   it {expect(subject.post_path).to eq('https://example.com/sqrl?nut=awnuts')}
   it {expect(subject.site_key).to be_a(SQRL::Key::Site)}
+
+  describe 'qry' do
+    it {
+      subject.update_post_path('/sqrl?nut=qry')
+      expect(subject.post_path).to eq('https://example.com/sqrl?nut=qry')
+    }
+  end
 end
