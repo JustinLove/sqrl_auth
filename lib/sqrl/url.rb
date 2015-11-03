@@ -53,6 +53,7 @@ module SQRL
       query = []
       query << 'nut='+options[:nut] if options[:nut]
       query << 'sfn='+SQRL::Base64.encode(options[:sfn]) if options[:sfn]
+      query << 'x='+options[:x].length.to_s if options[:x]
       new(kind.new(kind.scheme, nil, host, nil, nil, path, nil, query.join('&'), nil, parser))
     end
 
@@ -64,9 +65,21 @@ module SQRL
       SQRL::Base64.decode(query.split('&').find {|n| n.match('sfn=')}.gsub('sfn=', ''))
     end
 
+    def x
+      param = query.split('&').find {|n| n.match('x=')}
+      if param
+        param.gsub('x=', '').to_i
+      else
+        0
+      end
+    end
+
     def signing_host
+      if x > 0
+        return host + path.slice(0, x)
+      end
       parts = path.split('|')
-      if (parts.length > 1)
+      if parts.length > 1
         host + parts.first
       else
         host

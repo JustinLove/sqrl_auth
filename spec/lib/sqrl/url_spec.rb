@@ -25,6 +25,12 @@ describe SQRL::URL do
       it {expect(subject.to_s).to eq('sqrl://example.com/foo|sqrl?nut=awnuts')}
       it {expect(subject.post_path).to eq('https://example.com/foo/sqrl?nut=awnuts')}
     end
+
+    describe 'x' do
+      subject {SQRL::URL.sqrl('example.com/foo/sqrl', {:nut => 'awnuts', :x => '/foo'})}
+      it {expect(subject.to_s).to eq('sqrl://example.com/foo/sqrl?nut=awnuts&x=4')}
+      it {expect(subject.post_path).to eq('https://example.com/foo/sqrl?nut=awnuts&x=4')}
+    end
   end
 
   describe 'client' do
@@ -49,6 +55,12 @@ describe SQRL::URL do
 
     describe 'bar' do
       subject {SQRL::URL.parse('sqrl://example.com/foo|sqrl?nut=awnuts')}
+      it {expect(subject.signing_host).to eq('example.com/foo')}
+      it {expect(subject.nut).to eq('awnuts')}
+    end
+
+    describe 'x' do
+      subject {SQRL::URL.parse('sqrl://example.com/foo/sqrl?nut=awnuts&x=4')}
       it {expect(subject.signing_host).to eq('example.com/foo')}
       it {expect(subject.nut).to eq('awnuts')}
     end
