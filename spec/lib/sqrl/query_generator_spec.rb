@@ -16,7 +16,7 @@ describe SQRL::QueryGenerator do
   subject {SQRL::QueryGenerator.new(session, url)}
 
   it {expect(subject.post_path).to eq('https://example.com/sqrl?nut=awnuts')}
-  it {expect(subject.server_string).to eq(url)}
+  it {expect(subject.server_string).to eq('c3FybDovL2V4YW1wbGUuY29tL3Nxcmw_bnV0PWF3bnV0cw')}
   it {expect(subject.client_string).to match("ver=1\r\nidk=")}
   it {expect(subject.to_hash).to be_a(Hash)}
   it {expect(subject.to_hash[:server]).to eq('c3FybDovL2V4YW1wbGUuY29tL3Nxcmw_bnV0PWF3bnV0cw')}
@@ -37,5 +37,11 @@ describe SQRL::QueryGenerator do
     subject {SQRL::QueryGenerator.new(session, url).setlock({:vuk => 'vuk', :suk => 'suk'})}
     it {expect(subject.client_data[:vuk]).to be_a(String)}
     it {expect(subject.client_data[:suk]).to be_a(String)}
+  end
+
+  describe "second loop" do
+    let(:server_string) {SQRL::Base64.encode('response')}
+    subject {SQRL::QueryGenerator.new(session, server_string)}
+    it {expect(subject.to_hash[:server]).to eq(server_string)}
   end
 end

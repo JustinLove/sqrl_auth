@@ -4,7 +4,11 @@ module SQRL
   class QueryGenerator
     def initialize(session, server_string = session.server_string)
       @session = session
-      @server_string = server_string
+      if server_string.match('://')
+        @server_string = encode(server_string)
+      else
+        @server_string = server_string
+      end
       @commands = []
     end
 
@@ -48,7 +52,7 @@ module SQRL
 
     def to_hash
       client = encode(client_string)
-      server = encode(server_string)
+      server = server_string
       base = client + server
       {
         :client => client,
