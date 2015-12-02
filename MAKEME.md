@@ -89,12 +89,12 @@ Client: The client may inspect the response
     res.update_session!
 
     request = SQRL::QueryGenerator.new(session, response.body)
-    # one or more:
-    request.query!
+    # one of
+    request.disable!
+    request.enable!
     request.ident!
       request.setlock(identity_lock_key.unlock_pair)
-    request.enable!
-    request.disable!
+    request.query!
     request.remove!
 
     https_post(request.post_path, request.to_hash)

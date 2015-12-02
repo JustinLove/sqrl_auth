@@ -33,6 +33,24 @@ describe SQRL::QueryGenerator do
     it {expect(subject.client_data[:cmd]).to eq('query')}
   end
 
+  describe "ident command" do
+    subject {SQRL::QueryGenerator.new(session, url).ident!}
+    it {expect(subject.commands).to include('ident')}
+    it {expect(subject.client_data[:cmd]).to eq('ident')}
+  end
+
+  describe "enable command" do
+    subject {SQRL::QueryGenerator.new(session, url).enable!}
+    it {expect(subject.commands).to include('enable')}
+    it {expect(subject.client_data[:cmd]).to eq('enable')}
+  end
+
+  describe "disable command" do
+    subject {SQRL::QueryGenerator.new(session, url).disable!}
+    it {expect(subject.commands).to include('disable')}
+    it {expect(subject.client_data[:cmd]).to eq('disable')}
+  end
+
   describe "setlock" do
     subject {SQRL::QueryGenerator.new(session, url).setlock({:vuk => 'vuk', :suk => 'suk'})}
     it {expect(subject.client_data[:vuk]).to be_a(String)}

@@ -28,6 +28,16 @@ module SQRL
       self
     end
 
+    def enable!
+      @commands << 'enable'
+      self
+    end
+
+    def disable!
+      @commands << 'disable'
+      self
+    end
+
     def setlock(options)
       if !(options[:suk] && options[:vuk])
         raise ArgumentError, ":suk and :vuk are required to setlock"

@@ -86,10 +86,12 @@ Client: The client may inspect the response
     # obtain user intent to login
 
     request = SQRL::QueryGenerator.new(session, response.body)
-    # one or more:
-    request.query!
+    # one of
+    request.disable!
+    request.enable!
     request.ident!
       request.setlock(identity_lock_key.unlock_pair)
+    request.query!
 
     https_post(request.post_path, request.to_hash)
 
