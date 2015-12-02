@@ -57,6 +57,11 @@ describe SQRL::QueryGenerator do
     it {expect(subject.client_data[:suk]).to be_a(String)}
   end
 
+  describe "unlock" do
+    subject {SQRL::QueryGenerator.new(session, url).unlock(ursk)}
+    it {expect(subject.to_hash[:urs]).to match(/\A[\-\w_]+\Z/)}
+  end
+
   describe "second loop" do
     let(:server_string) {SQRL::Base64.encode('response')}
     subject {SQRL::QueryGenerator.new(session, server_string)}

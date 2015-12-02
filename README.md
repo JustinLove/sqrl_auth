@@ -89,7 +89,9 @@ Client: The client may inspect the response
     # one of
     request.disable!
     request.enable!
+      request.unlock(SQRL::Key::UnlockRequestSigning(suk, identity_unlock_key))
     request.ident!
+      request.unlock(SQRL::Key::UnlockRequestSigning(suk, identity_unlock_key))
       request.setlock(identity_lock_key.unlock_pair)
     request.query!
 

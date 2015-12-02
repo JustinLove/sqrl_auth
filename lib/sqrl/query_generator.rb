@@ -47,8 +47,8 @@ module SQRL
       self
     end
 
-    def unlock(iuk)
-      @iuk = iuk
+    def unlock(ursk)
+      @ursk = ursk
       self
     end
 
@@ -68,7 +68,7 @@ module SQRL
         :client => client,
         :server => server,
         :ids => encode(site_key.signature(base)),
-        :urs => @iuk && encode(@iuk.signature(base)),
+        :urs => @ursk && encode(@ursk.signature(base)),
       }.reject {|k,v| v.nil? || v == ''}
     end
 
