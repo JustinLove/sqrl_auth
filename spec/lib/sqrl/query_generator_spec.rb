@@ -51,6 +51,12 @@ describe SQRL::QueryGenerator do
     it {expect(subject.client_data[:cmd]).to eq('disable')}
   end
 
+  describe "remove command" do
+    subject {SQRL::QueryGenerator.new(session, url).remove!}
+    it {expect(subject.commands).to include('remove')}
+    it {expect(subject.client_data[:cmd]).to eq('remove')}
+  end
+
   describe "setlock" do
     subject {SQRL::QueryGenerator.new(session, url).setlock({:vuk => 'vuk', :suk => 'suk'})}
     it {expect(subject.client_data[:vuk]).to be_a(String)}

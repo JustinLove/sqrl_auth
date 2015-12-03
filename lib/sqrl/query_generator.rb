@@ -18,13 +18,8 @@ module SQRL
     attr_reader :server_unlock_key
     attr_reader :verify_unlock_key
 
-    def query!
-      @commands << 'query'
-      self
-    end
-
-    def ident!
-      @commands << 'ident'
+    def disable!
+      @commands << 'disable'
       self
     end
 
@@ -33,8 +28,18 @@ module SQRL
       self
     end
 
-    def disable!
-      @commands << 'disable'
+    def ident!
+      @commands << 'ident'
+      self
+    end
+
+    def query!
+      @commands << 'query'
+      self
+    end
+
+    def remove!
+      @commands << 'remove'
       self
     end
 

@@ -94,6 +94,7 @@ Client: The client may inspect the response
       request.unlock(SQRL::Key::UnlockRequestSigning(suk, identity_unlock_key))
       request.setlock(identity_lock_key.unlock_pair)
     request.query!
+    request.remove!
 
     https_post(request.post_path, request.to_hash)
 
