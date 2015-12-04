@@ -9,7 +9,5 @@ module SQRL
     0x040 => :command_failed,
     0x080 => :client_failure,
     0x100 => :bad_association_id,
-    0x200 => :invalid_link_origin,
-    0x400 => :suppress_sfn_confirmation,
   }
 end
