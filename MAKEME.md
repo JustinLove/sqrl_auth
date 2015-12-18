@@ -48,8 +48,8 @@ Server sessions:
 Client: Once the code or link has been decoded
 
     # (obtain and decrypt the identity_master_key)
-    session = SQRL::ClientSession.new(url, identity_master_key)
-    #session.pidk = 
+    session = SQRL::ClientSession.new(url, [identity_master_key])
+    # add previous keys to array as needed, from newset to oldest
 
     request = SQRL::QueryGenerator.new(session, url)
 

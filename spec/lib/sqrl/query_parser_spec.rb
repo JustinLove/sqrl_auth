@@ -10,7 +10,7 @@ require 'sqrl/key/identity_unlock'
 describe SQRL::QueryParser do
   URL = 'sqrl://example.com/sqrl?nut=awnuts'
   def self.testcase(ursk)
-    session = SQRL::ClientSession.new(URL, 'x'.b*32)
+    session = SQRL::ClientSession.new(URL, ['x'.b*32])
     SQRL::QueryGenerator.new(session, URL).query!.unlock(ursk)
   end
 

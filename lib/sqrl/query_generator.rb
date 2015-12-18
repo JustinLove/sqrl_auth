@@ -73,6 +73,7 @@ module SQRL
         :client => client,
         :server => server,
         :ids => encode(site_key.signature(base)),
+        :pids => previous_site_key && encode(previous_site_key.signature(base)),
         :urs => @ursk && encode(@ursk.signature(base)),
       }.reject {|k,v| v.nil? || v == ''}
     end
@@ -86,6 +87,7 @@ module SQRL
         :ver => 1,
         :cmd => @commands.join('~'),
         :idk => encode(site_key.public_key),
+        :pidk => previous_site_key && encode(previous_site_key.public_key),
         :suk => @server_unlock_key,
         :vuk => @verify_unlock_key,
       }.reject {|k,v| v.nil? || v == ''}
@@ -95,6 +97,10 @@ module SQRL
 
     def site_key
       @session.site_key
+    end
+
+    def previous_site_key
+      @session.previous_site_key
     end
 
     def encode(string)
