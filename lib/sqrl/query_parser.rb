@@ -21,6 +21,14 @@ module SQRL
       (client_data['cmd'] || '').split('~')
     end
 
+    def options
+      (client_data['opt'] || '').split('~')
+    end
+
+    def opt?(option)
+      options.include?(option)
+    end
+
     def message
       params['client']+params['server']
     end

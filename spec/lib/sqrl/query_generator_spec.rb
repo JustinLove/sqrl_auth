@@ -14,12 +14,14 @@ describe SQRL::QueryGenerator do
   let(:suk) {SQRL::Key::ServerUnlock.new('x'.b*32)}
   let(:ursk) {SQRL::Key::UnlockRequestSigning.new(suk, iuk)}
   let(:session) {SQRL::ClientSession.new(url, [imk, pimk])}
-  subject {SQRL::QueryGenerator.new(session, url)}
+  subject {SQRL::QueryGenerator.new(session, url).opt('sqrlonly', 'hardlock')}
 
   it {expect(subject.post_path).to eq('https://example.com/sqrl?nut=awnuts')}
   it {expect(subject.server_string).to eq('c3FybDovL2V4YW1wbGUuY29tL3Nxcmw_bnV0PWF3bnV0cw')}
-  it {expect(subject.client_string).to match("ver=1\r\nidk=")}
+  it {expect(subject.client_string).to match("ver=1\r\n")}
+  it {expect(subject.client_string).to match("\r\nidk=")}
   it {expect(subject.client_string).to match("pidk=")}
+  it {expect(subject.client_string).to match("opt=sqrlonly~hardlock")}
   it {expect(subject.to_hash).to be_a(Hash)}
   it {expect(subject.to_hash[:server]).to eq('c3FybDovL2V4YW1wbGUuY29tL3Nxcmw_bnV0PWF3bnV0cw')}
   it {expect(subject.to_hash[:client]).to match(/\A[\-\w_]+\Z/)}

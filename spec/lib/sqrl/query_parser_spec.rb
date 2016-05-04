@@ -11,7 +11,7 @@ describe SQRL::QueryParser do
   URL = 'sqrl://example.com/sqrl?nut=awnuts'
   def self.testcase(ursk)
     session = SQRL::ClientSession.new(URL, ['x'.b*32])
-    SQRL::QueryGenerator.new(session, URL).query!.unlock(ursk)
+    SQRL::QueryGenerator.new(session, URL).query!.unlock(ursk).opt('sqrlonly', 'hardlock')
   end
 
 =begin
@@ -26,15 +26,15 @@ describe SQRL::QueryParser do
   p testcase(ursk).post_body
 =end
 
-  let(:vuk) {SQRL::Key::VerifyUnlock.new(SQRL::Base64.decode("j5rWzCNlvSlAf3G6jocfJfYTkIyejjvzB-Cliftfs-s"))}
+  let(:vuk) {SQRL::Key::VerifyUnlock.new(SQRL::Base64.decode("mkNweHKcBXbJxABLkAIn2qSa4kXOndhckaA9-2vWQj4"))}
   let(:raw_request) {
-    {:client=>"dmVyPTENCmNtZD1xdWVyeQ0KaWRrPXZkYW82Rk9Pdk05TElpN3JQUGNGSFI4bS1vZ2dTd0xTUW9QNUNUdVJzUU0", :server=>"c3FybDovL2V4YW1wbGUuY29tL3Nxcmw_bnV0PWF3bnV0cw", :ids=>"6EpGjA2Tl3qs7pc7nyes2-CGApMraouxpfaVoRVBK4yQr0KMYxUZ3xhKMVpyRoi2NUHZJdgCJGCp5SezJ3ZfBg", :urs=>"33_pkq3l8FGsS-lcl1OjEMcHKs3BkLqhV3E9A4sOycWf-J5PwbIxZMBISQkSj51D8z0HxHZ5tXnb5RdORdIrCA"}
+    {:client=>"dmVyPTENCmNtZD1xdWVyeQ0Kb3B0PXNxcmxvbmx5fmhhcmRsb2NrDQppZGs9dmRhbzZGT092TTlMSWk3clBQY0ZIUjhtLW9nZ1N3TFNRb1A1Q1R1UnNRTQ", :server=>"c3FybDovL2V4YW1wbGUuY29tL3Nxcmw_bnV0PWF3bnV0cw", :ids=>"bcIBqwgHHH82qN8eaB70ZW3eqI8njs2LWmKSqRT6vPgapAE2B0fQSXRi69mIIPgXqUHXGViBbmHblQMb6ssgAg", :urs=>"4FXl1FMT0yzAM2CHLfRoLmmDACngMF6MxmrDe1FWtOKC5Ne8g8LzaA6J_Wj6FnP99ku3U1eXqMXa8wbP-UrrDQ"}
   }
   let(:request) {
     Hash[raw_request.map {|k,v| [k.to_s,v]}]
   }
   let(:body) {
-    "client=dmVyPTENCmNtZD1xdWVyeQ0KaWRrPXZkYW82Rk9Pdk05TElpN3JQUGNGSFI4bS1vZ2dTd0xTUW9QNUNUdVJzUU0&server=c3FybDovL2V4YW1wbGUuY29tL3Nxcmw_bnV0PWF3bnV0cw&ids=6EpGjA2Tl3qs7pc7nyes2-CGApMraouxpfaVoRVBK4yQr0KMYxUZ3xhKMVpyRoi2NUHZJdgCJGCp5SezJ3ZfBg&urs=33_pkq3l8FGsS-lcl1OjEMcHKs3BkLqhV3E9A4sOycWf-J5PwbIxZMBISQkSj51D8z0HxHZ5tXnb5RdORdIrCA"
+    "client=dmVyPTENCmNtZD1xdWVyeQ0Kb3B0PXNxcmxvbmx5fmhhcmRsb2NrDQppZGs9dmRhbzZGT092TTlMSWk3clBQY0ZIUjhtLW9nZ1N3TFNRb1A1Q1R1UnNRTQ&server=c3FybDovL2V4YW1wbGUuY29tL3Nxcmw_bnV0PWF3bnV0cw&ids=bcIBqwgHHH82qN8eaB70ZW3eqI8njs2LWmKSqRT6vPgapAE2B0fQSXRi69mIIPgXqUHXGViBbmHblQMb6ssgAg&urs=4FXl1FMT0yzAM2CHLfRoLmmDACngMF6MxmrDe1FWtOKC5Ne8g8LzaA6J_Wj6FnP99ku3U1eXqMXa8wbP-UrrDQ"
   }
 
   it {expect(SQRL::QueryParser.new({})).not_to be_valid}
@@ -42,11 +42,13 @@ describe SQRL::QueryParser do
   describe 'hash request' do
     subject {SQRL::QueryParser.new(request)}
     it {expect(subject.server_string).to eq(URL)}
-    it {expect(subject.client_string).to match('ver=1\r\ncmd=query\r\nidk=')}
+    it {expect(subject.client_string).to match('ver=1\r\ncmd=query\r\nopt=')}
     it {expect(subject.client_data).to be_a(Hash)}
     it {expect(subject.client_data['ver']).to eq('1')}
     it {expect(subject.client_data['cmd']).to eq('query')}
+    it {expect(subject.client_data['opt']).to eq('sqrlonly~hardlock')}
     it {expect(subject.commands).to eq(['query'])}
+    it {expect(subject.opt?('sqrlonly')).to be true}
     it {expect(subject.idk.length).to eq(32)}
     it {expect(subject.ids.length).to eq(64)}
     it {expect(subject).to be_valid}
@@ -56,7 +58,7 @@ describe SQRL::QueryParser do
   describe 'string request' do
     subject {SQRL::QueryParser.new(body)}
     it {expect(subject.server_string).to eq(URL)}
-    it {expect(subject.client_string).to match('ver=1\r\ncmd=query\r\nidk=')}
+    it {expect(subject.client_string).to match('ver=1\r\ncmd=query\r\nopt=')}
   end
 
   describe 'sqrlid query' do

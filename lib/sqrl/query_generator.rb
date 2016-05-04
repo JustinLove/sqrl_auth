@@ -10,11 +10,13 @@ module SQRL
         @server_string = server_string
       end
       @commands = []
+      @options = []
     end
 
     attr_reader :session
     attr_reader :server_string
     attr_reader :commands
+    attr_reader :options
     attr_reader :server_unlock_key
     attr_reader :verify_unlock_key
 
@@ -57,6 +59,11 @@ module SQRL
       self
     end
 
+    def opt(*opts)
+      @options += opts
+      self
+    end
+
     def post_path
       @session.post_path
     end
@@ -86,6 +93,7 @@ module SQRL
       {
         :ver => 1,
         :cmd => @commands.join('~'),
+        :opt => options.any? && options.join('~'),
         :idk => encode(site_key.public_key),
         :pidk => previous_site_key && encode(previous_site_key.public_key),
         :suk => @server_unlock_key,

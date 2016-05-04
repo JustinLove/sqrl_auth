@@ -53,6 +53,9 @@ Client: Once the code or link has been decoded
 
     request = SQRL::QueryGenerator.new(session, url)
 
+    # set options
+    request.opt('sqrlonly', 'hardlock')
+
     https_post(request.post_path, request.to_hash)
     # or request.post_body depending on what your library wants
 
@@ -62,6 +65,7 @@ Server: The server receives a request and verifies it
     invalid = !req.valid?
     req_nut = SQRL::ReversibleNut.reverse(server_key, params[:nut])
     user = find_user(req.idk)
+    sqrlonly = req.opt?('sqrlonly')
 
     res_nut = req_nut.response_nut
     response = SQRL::ResponseGenerator.new(res_nut, {
@@ -85,8 +89,6 @@ Client: The client may inspect the response
     res.server_friendly_name
 
     # obtain user intent to login
-
-    res.update_session!
 
     request = SQRL::QueryGenerator.new(session, response.body)
     # one of
