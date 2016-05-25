@@ -73,6 +73,14 @@ module SQRL
       decode(params['suk']).b
     end
 
+    def url?
+      !!params['url']
+    end
+
+    def url
+      params['url']
+    end
+
     def ask?
       !!params['ask']
     end
