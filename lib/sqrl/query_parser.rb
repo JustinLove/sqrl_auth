@@ -87,6 +87,14 @@ module SQRL
       decode(params['urs']).b
     end
 
+    def ins
+      decode(client_data['ins'])
+    end
+
+    def pins
+      decode(client_data['ins'])
+    end
+
     private
     def decode(s)
       Base64.decode(s)

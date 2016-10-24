@@ -81,6 +81,14 @@ module SQRL
       params['url']
     end
 
+    def sin?
+      !!params['sin']
+    end
+
+    def sin
+      decode(params['sin'])
+    end
+
     def ask?
       !!params['ask']
     end

@@ -64,6 +64,10 @@ module SQRL
       self
     end
 
+    def sin(index)
+      @sin = index
+    end
+
     def post_path
       @session.post_path
     end
@@ -96,6 +100,8 @@ module SQRL
         :opt => options.any? && options.join('~'),
         :idk => encode(site_key.public_key),
         :pidk => previous_site_key && encode(previous_site_key.public_key),
+        :ins => @sin && encode(site_key.index_key.signature(@sin)),
+        :pins => @sin && encode(previous_site_key.index_key.signature(@sin)),
         :suk => @server_unlock_key,
         :vuk => @verify_unlock_key,
       }.reject {|k,v| v.nil? || v == ''}

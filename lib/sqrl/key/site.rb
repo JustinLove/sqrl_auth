@@ -1,3 +1,5 @@
+require 'sqrl/enhash'
+require 'sqrl/key/index'
 require 'rbnacl'
 
 module SQRL
@@ -16,6 +18,10 @@ module SQRL
 
       def signature(message)
         @private_key.sign(message)
+      end
+
+      def index_key
+        Key::Index.new(EnHash.call(@private_key.to_bytes))
       end
     end
   end
