@@ -107,8 +107,8 @@ module SQRL
       Base64.decode(s)
     end
 
-    def parse_form(s)
-      Hash[s.split("&").map {|s|
+    def parse_form(f)
+      Hash[f.split("&").map {|s|
         m = s.match(/([^=]+)=(.*)/)
         [m[1], m[2]]
       }]
@@ -116,8 +116,8 @@ module SQRL
       {'error' => e, 'tif' => 0x40.to_s(tif_base)}
     end
 
-    def parse_params(s)
-      Hash[s.split("\r\n").map {|s|
+    def parse_params(p)
+      Hash[p.split("\r\n").map {|s|
         m = s.match(/([^=]+)=(.*)/)
         [m[1], m[2]]
       }]

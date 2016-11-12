@@ -11,6 +11,11 @@ module SQRL
       end
       @commands = []
       @options = []
+
+      @sin = nil
+      @server_unlock_key = nil
+      @verify_unlock_key = nil
+      @ursk = nil
     end
 
     attr_reader :session

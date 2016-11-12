@@ -88,7 +88,7 @@ module SQRL
 
     def post_path
       path = dup
-      path.scheme = post_scheme
+      path.scheme = post_scheme if respond_to?(:post_scheme)
       path.to_s.sub('|', '/')
     end
   end

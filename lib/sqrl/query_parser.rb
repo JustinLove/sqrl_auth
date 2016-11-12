@@ -3,11 +3,15 @@ require 'sqrl/base64'
 
 module SQRL
   class QueryParser
-    def initialize(params)
-      if (params.respond_to?(:split))
-        @params = Hash[params.split('&').map {|s| s.split('=')}]
+    def initialize(_params)
+      if (_params.respond_to?(:split))
+        pairs = _params.split('&').map {|s| s.split('=')}
+        if pairs.any? {|pair| pair.length != 2}
+          raise ArgumentError, "#{self.class.name} requires urlsafe base64, but some argument does not appear be in key=urlsafe_base64 form"
+        end
+        @params = Hash[pairs]
       else
-        @params = params
+        @params = _params
       end
       if @params.any? && !@params.keys.first.kind_of?(String)
         raise ArgumentError, "#{self.class.name} uses string keys for params"
