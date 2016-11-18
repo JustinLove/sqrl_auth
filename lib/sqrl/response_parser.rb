@@ -6,19 +6,15 @@ require 'sqrl/ask'
 
 module SQRL
   class ResponseParser
-    def initialize(session, params)
-      @session = session
+    def initialize(params)
+      @server_string = params
       @tif_base = 16
-
-      session.server_string = params
 
       begin
         @params = parse_params(decode(params))
       rescue
         heuristic_parse(params)
       end
-
-      session.update_post_path(@params['qry']) if @params['qry']
     end
 
     def heuristic_parse(params)
@@ -43,13 +39,15 @@ module SQRL
       end
     end
 
-    attr_reader :params
-    attr_reader :session
-    attr_accessor :tif_base
-
-    def post_path
-      session.post_path
+    def update_session(session)
+      session.server_string = server_string
+      session.update_post_path(params['qry']) if params['qry']
+      self
     end
+
+    attr_reader :params
+    attr_reader :server_string
+    attr_accessor :tif_base
 
     def server_friendly_name
       params['sfn'] || 'unspecified'

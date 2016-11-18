@@ -1,22 +1,18 @@
 require 'spec_helper'
 require 'sqrl/key/identity_master'
-require 'sqrl/client_session'
 require 'sqrl/response_parser'
 
 describe SQRL::ResponseParser do
-  let(:imk) {SQRL::Key::IdentityMaster.new('x'.b*32)}
   let(:nut) {'1vwuE1aBqyOHCg9yqVDhnQ'}
-  let(:url) {'qrl://example.com/sqrl?nut=awnuts'}
-  let(:session) {SQRL::ClientSession.new(url, [imk])}
   let(:message) {SQRL::Base64.encode <<RESPONSE}
 ver=1\r
 nut=#{nut}\r
 tif=44\r
 sfn=SQRL::Test\r
 RESPONSE
-  subject {SQRL::ResponseParser.new(session, message)}
+  subject {SQRL::ResponseParser.new(message)}
 
-  it {expect(subject.post_path).to eq('http://example.com/sqrl?nut=awnuts')}
+  it {expect(subject.server_string).to eq(message)}
   it {expect(subject.params['ver']).to eq('1')}
   it {expect(subject.server_friendly_name).to eq('SQRL::Test')}
   it {expect(subject.ip_match?).to be true}
@@ -25,7 +21,7 @@ RESPONSE
 
   describe "encoded message" do
     let(:encoded) {"dmVyPTENCnRpZj02NA0KbnV0PU5XRXlZV1F4WlRFM056QTBOemhqTW1KbU5EUm1abVZrTUdZeVpqUmxOVFUNCnNmbj1UZXN0IFNlcnZlcg0K"}
-    subject {SQRL::ResponseParser.new(session, encoded)}
+    subject {SQRL::ResponseParser.new(encoded)}
 
     it {expect(subject.params['ver']).to eq('1')}
     it {expect(subject.server_friendly_name).to eq('Test Server')}
@@ -37,7 +33,7 @@ RESPONSE
   describe "GRC" do
     let(:encoded) {"dmVyPTENCm51dD1QbXNqQlVkSUFLUEZ5RWVwRG9ON2Z3DQp0aWY9NA0KcXJ5PS9zcXJsP251dD1QbXNqQlVkSUFLUEZ5RWVwRG9ON2Z3DQpzZm49R1JDDQo"}
 
-    subject {SQRL::ResponseParser.new(session, encoded)}
+    subject {SQRL::ResponseParser.new(encoded)}
 
     #it {p subject.params}
     it {expect(subject.params['ver']).to eq('1')}

@@ -84,7 +84,7 @@ Server: The server receives a request and verifies it
 
 Client: The client may inspect the response
 
-    res = SQRL::ResponseParser.new(session, response.body)
+    res = SQRL::ResponseParser.new(response.body).update_session(session)
     res.command_failed?
     res.server_friendly_name
 
