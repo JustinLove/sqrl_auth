@@ -109,7 +109,7 @@ module SQRL
         :pins => @sin && encode(previous_site_key.index_key.signature(@sin)),
         :suk => @server_unlock_key,
         :vuk => @verify_unlock_key,
-      }.reject {|k,v| v.nil? || v == ''}
+      }.reject {|k,v| v.nil? || v === false || v == ''}
     end
 
     private

@@ -35,6 +35,7 @@ describe SQRL::QueryGenerator do
     subject {SQRL::QueryGenerator.new(session, url).query!}
     it {expect(subject.commands).to include('query')}
     it {expect(subject.client_data[:cmd]).to eq('query')}
+    it {expect(subject.client_string).not_to match('opt=')}
   end
 
   describe "ident command" do
