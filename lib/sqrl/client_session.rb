@@ -8,9 +8,15 @@ module SQRL
       url = URL.parse(path)
       @post_path = url.post_path
       @site_keys = imks.map {|imk| Key::Site.new(imk, url.signing_host)}
-      params = Hash[URI.decode_www_form(url.query)]
-      if params['sfn']
-        @server_friendly_name = SQRL::Base64.decode(params['sfn'])
+      if url.query
+        params = Hash[URI.decode_www_form(url.query)]
+        if params['sfn']
+          begin
+            @server_friendly_name = SQRL::Base64.decode(params['sfn'])
+          rescue => e
+            p "exception #{e} while trying to parse SFN"
+          end
+        end
       end
     end
 
