@@ -8,10 +8,15 @@ module SQRL
       url = URL.parse(path)
       @post_path = url.post_path
       @site_keys = imks.map {|imk| Key::Site.new(imk, url.signing_host)}
+      params = Hash[URI.decode_www_form(url.query)]
+      if params['sfn']
+        @server_friendly_name = SQRL::Base64.decode(params['sfn'])
+      end
     end
 
     attr_accessor :server_string
     attr_accessor :post_path
+    attr_accessor :server_friendly_name
     attr_reader :site_keys
 
     def site_key
