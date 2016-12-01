@@ -37,13 +37,31 @@ module SQRL
       params['client']+params['server']
     end
 
-    def valid?
+    def valid?(vuk = nil)
+      ids_valid? && pids_valid? && urs_valid?(vuk)
+    end
+
+    def ids_valid?
       return false unless client_data['idk']
       RbNaCl::VerifyKey.new(idk).verify(ids, message)
     # rbnacl raises in a slight breeze
     rescue StandardError => e
       p e
       false
+    end
+
+    def pids_valid?
+      return true unless client_data['pidk']
+      RbNaCl::VerifyKey.new(pidk).verify(pids, message)
+    # rbnacl raises in a slight breeze
+    rescue StandardError => e
+      p e
+      false
+    end
+
+    def urs_valid?(vuk)
+      return true unless vuk && params['urs']
+      vuk.valid?(urs, message)
     end
 
     def unlocked?(vuk)
